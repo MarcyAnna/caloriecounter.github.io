@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Create function for calculating BMR / User Input text boxes using numbers- Imperial or Metric
+    Create function for calculating Total Calories using result from BMR function /User Input drop down menu 
+-->
+
+<body style="background-color:MistyRose">
+
+    <h1 style="color:blue; text-align:center;">Calorie Calculator</h1>
+    <p>
+        <center><br>The most reliable way to lose weight is to make sure that your daily calorie input is not exceeding
+            your
+            daily calorie output.<br><br>
+            By calculating how many calories you need on a daily basis using your BMR and average activity level and
+            then
+            adjusting the amount of calories you are consuming in food and drink, you can begin the process of losing
+            weight.<br><br>
+            Put simply, your body burns a certain amount of calories each day just to run basic bodily functions. This
+            amount
+            of calories your body needs is called your Basal Metabolic Rate, or BMR.<br><br>
+            In addition to your BMR, any extra activity your body does (from moving a pencil to running a marathon) will
+            burn
+            calories.
+    </p>
+    <br><br>
+    <p style="color:red; text-align:center;">It takes 3,500 calories to lose 1 pound of fat. So if you have a
+        deficit of 500 calories per day (intake 500 less than you burn), you will lose a pound per week!</p>
+
+    <form name="basicForm">
+        <center>
+            <p style="color:blue;text-align:center;">Calculate Your BMR<br> <br> </p>
+            Sex:
+            <select id="sex">
+                <option value="Male">Male
+                <option value="Female">Female
+            </select> <br><br>
+            Weight:lb
+            <input type="number" id="wtinlb">
+            OR Weight:kg
+            <input type="number" id="wtinkg"> <br><br>
+            Height:in
+            <input type="number" id="htinIn">
+            OR Height:cm
+            <input type="number" id="htincm"><br><br>
+            Age
+            <input type="number" id="age"><br><br>
+
+            <input type="button" value="Submit" onClick="calculateBMR()">
+
+            <br>
+            <p id="answer"></p>
+
+            <!-- Hide activity level drop down until BMR function is run-->
+            <select id="activeLevel" onchange="calculateTotal()">
+                <option value="Sedentary">Sedentary(little or no exercise)
+                <option value="Light">Lightly Active(light exercise/sports 1-3 days/week)
+                <option value="Moderate">Moderately Active(moderate exercise/sports 3-5 days/week)
+                <option value="Very">Very Active(hard exercise/sports 6-7 days/week)
+                <option value="Extra">Extra Active(very hard exercise/sports and a physical job)
+            </select>
+        </center>
+    </form>
+
+    <script>
+
+
+        var getBMR = 0;
+        var totalCal = 0;
+        document.getElementById("activeLevel").style.visibility = "hidden";
+
+        //Function to calculate BMR: get value from text boxes
+        function calculateBMR() {
+            getBMR = document.getElementById("sex").value;
+            var getWt1 = document.getElementById("wtinlb").value;
+            var getWt2 = document.getElementById("wtinkg").value;
+            var getHt1 = document.getElementById("htinIn").value;
+            var getHt2 = document.getElementById("htincm").value;
+            var getAge = document.getElementById("age").value;
+
+            if (getBMR == "Male") {
+                //relying on user input only one set of values (Imperial or Metric)
+                getBMR = Math.ceil(10 * getWt2 + (10 * (getWt1 * 0.454)) + 6.25 * getHt2 + (6.25 * (getHt1 * 2.54)) - 5 * getAge + 5);
+            }
+            else {
+                //relying on user input only one set of values (Imperial or Metric)
+                getBMR = Math.ceil(10 * getWt2 + (10 * (getWt1 * 0.454)) + 6.25 * getHt2 + (6.25 * (getHt1 * 2.54)) - 5 * getAge - 161);
+            }
+
+            document.getElementById("answer").innerHTML = "<center>Your BMR is: " + getBMR + " calories. <br><br>Now choose your activity level"
+            document.getElementById("activeLevel").style.visibility = "visible";
+        }
+        //Function to calculate Total Calories: get value from drop down and multiply by BMR output
+        function calculateTotal() {
+            totalCal = document.getElementById("activeLevel").value;
+            if (totalCal == "Sedentary") {
+                totalCal = "You need " + (Math.ceil(getBMR * 1.2)) + " calories to maintain your current weight.";
+            }
+            else if (totalCal == "Light") {
+                totalCal = "You need " + (Math.ceil(getBMR * 1.375)) + " calories to maintain your current weight.";
+            }
+            else if (totalCal == "Moderate") {
+                totalCal = "You need " + (Math.ceil(getBMR * 1.55)) + " calories to maintain your current weight.";
+            }
+            else if (totalCal == "Very") {
+                totalCal = "You need " + (Math.ceil(getBMR * 1.725)) + " calories to maintain your current weight.";
+            }
+            else if (totalCal == "Extra") {
+                totalCal = "You need " + (Math.ceil(getBMR * 1.9)) + " calories to maintain your current weight.";
+            }
+
+
+            document.getElementById("calories").innerHTML = totalCal;
+
+
+        }
+
+
+    </script>
+
+
+    <p id="calories"></p>
+
+
+
+</body>
+
+</html>
